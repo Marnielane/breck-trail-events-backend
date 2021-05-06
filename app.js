@@ -7,8 +7,10 @@ const dotenv = require('dotenv');
 
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
+const isAuth = require('./middleware/is-auth')
 
 const app = express();
+
 dotenv.config();
 const {
     MONGO_USER,
@@ -17,6 +19,8 @@ const {
 } = process.env
 
 // app.use(bodyParser.json());
+
+app.use(isAuth)
 
 app.use(
     '/graphql', 
