@@ -1,5 +1,4 @@
 const express = require('express');
-// const bodyParser = require('body-parser-graphql');
 const { graphqlHTTP } = require('express-graphql');
 const port = process.env.PORT || 8000
 const mongoose = require('mongoose');
@@ -18,7 +17,6 @@ const {
     MONGO_DB
 } = process.env
 
-// app.use(bodyParser.json());
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');

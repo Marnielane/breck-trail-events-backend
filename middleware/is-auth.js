@@ -1,4 +1,4 @@
-const { TransformQuery } = require('@graphql-tools/wrap');
+// const { TransformQuery } = require('@graphql-tools/wrap');
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
