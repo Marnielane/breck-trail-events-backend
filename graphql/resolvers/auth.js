@@ -4,28 +4,25 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user');
 
 module.exports = {
-    createUser: args => {
-        return User.findOne({email: args.userInput.email})
-        .then(user => {
-            if (user) {
-                throw new Error('User already exists.')
+    createUser: async args => {
+        try {
+            const existingUser = await User.findOne({ email: args.userInput.email });
+            if (existingUser) {
+              throw new Error('User exists already.');
             }
-            return bcrypt
-            .hash(args.userInput.password, 12)
-        })
-        .then(hashedPassword => {
+            const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
+      
             const user = new User({
-                email: args.userInput.email,
-                password: hashedPassword
+              email: args.userInput.email,
+              password: hashedPassword
             });
-            return user.save();
-        })
-        .then(result => {
+      
+            const result = await user.save();
+      
             return { ...result._doc, password: null, _id: result.id };
-        })
-        .catch(err => {
+          } catch (err) {
             throw err;
-        });
+          }
     },
     login: async ({email, password}) => {
         const user = await User.findOne({email: email});
@@ -36,9 +33,13 @@ module.exports = {
         if (!isEqual) {
             throw new Error('Password is incorrect')
         }
-        const token = jwt.sign({userId: user.distinct, email: user.email}, 'somesupersecretkey', {
-            expiresIn: '1h'
-        });
+        const token = jwt.sign(
+            {userId: user.distinct, email: user.email}, 
+            'somesupersecretkey', 
+            {
+                expiresIn: '1h'
+            }
+        );
         return { userId: user.id, token: token, tokenExpiration: 1 }
     }
 };
