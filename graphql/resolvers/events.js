@@ -10,6 +10,7 @@ module.exports = {
             return events.map(event => {
                     return transformEvent(event);
             });
+            console.log(events)
             } catch (err) {
                 throw err;
             }
