@@ -17,6 +17,7 @@ module.exports = {
         }
     },
     bookEvent: async (args, req) => {
+        console.log("hit book event")
         if (!req.isAuth) {
             throw new Error('Unauthenticated')
         }
@@ -29,10 +30,12 @@ module.exports = {
         return transformBooking(result);
     },
     cancelBooking: async (args, req) => {
+        console.log("you hit me in cancel")
         if (!req.isAuth) {
             throw new Error('Unauthenticated')
         }
         try {
+            console.log("you hit me in try")
             const booking = await Booking.findById(args.bookingId).populate('event');
                 const event = transformEvent(booking.event);
                 await Booking.deleteOne({ _id: args.bookingId });  
